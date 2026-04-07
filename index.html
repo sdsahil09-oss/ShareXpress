@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>📤 ShareXpress - Instant File Share & Download</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShareXpress - Instant File Share</title>
     <style>
         * {
             margin: 0;
@@ -12,26 +12,29 @@
         }
 
         body {
-            min-height: 100vh;
+            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
             padding: 20px;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
         }
 
-        /* header */
-        .header {
+        .card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        h1 {
             text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .header h1 {
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             background: linear-gradient(135deg, #fbbf24, #ec4899);
             -webkit-background-clip: text;
             background-clip: text;
@@ -39,83 +42,76 @@
             margin-bottom: 10px;
         }
 
-        .header p {
-            color: #94a3b8;
-            font-size: 1.1rem;
-        }
-
-        /* upload box */
-        .upload-box {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(12px);
-            border: 2px dashed #fbbf24;
-            border-radius: 32px;
-            padding: 60px 30px;
+        .sub {
             text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            color: #94a3b8;
             margin-bottom: 30px;
         }
 
-        .upload-box:hover {
+        .upload-area {
+            border: 2px dashed #fbbf24;
+            border-radius: 20px;
+            padding: 50px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .upload-area:hover {
             border-color: #ec4899;
-            background: rgba(30, 41, 59, 0.8);
-            transform: scale(1.01);
+            background: rgba(0,0,0,0.5);
         }
 
         .upload-icon {
             font-size: 64px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
-        .upload-box h3 {
+        .upload-area h3 {
             color: white;
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
-        .upload-box p {
+        .upload-area p {
             color: #94a3b8;
         }
 
-        .file-input {
+        input[type="file"] {
             display: none;
         }
 
-        /* file info */
-        .file-info {
+        .file-card {
             background: #1e293b;
-            border-radius: 20px;
+            border-radius: 16px;
             padding: 20px;
-            margin-bottom: 30px;
+            margin-top: 20px;
             display: none;
         }
 
-        .file-info.show {
+        .file-card.show {
             display: block;
-            animation: fadeIn 0.4s ease;
         }
 
-        .file-details {
+        .file-info {
             display: flex;
             align-items: center;
             gap: 15px;
-            flex-wrap: wrap;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .file-icon {
             font-size: 48px;
         }
 
-        .file-meta {
+        .file-details {
             flex: 1;
         }
 
         .file-name {
             color: white;
             font-weight: bold;
-            font-size: 1.1rem;
             word-break: break-all;
         }
 
@@ -124,57 +120,35 @@
             font-size: 0.85rem;
         }
 
-        /* share section */
-        .share-section {
-            background: #0f172a;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 30px;
-            display: none;
-        }
-
-        .share-section.show {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .share-title {
-            color: #fbbf24;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-        }
-
-        .link-container {
+        .link-box {
             display: flex;
             gap: 10px;
+            margin: 20px 0;
             flex-wrap: wrap;
-            margin-bottom: 20px;
         }
 
-        .share-link {
+        .link-input {
             flex: 1;
-            background: #1e293b;
+            background: #0f172a;
             border: 1px solid #334155;
             border-radius: 12px;
-            padding: 12px 16px;
+            padding: 12px;
             color: #a5f3fc;
             font-family: monospace;
-            font-size: 0.9rem;
-            word-break: break-all;
+            font-size: 0.85rem;
         }
 
-        .copy-btn, .download-btn {
+        button {
             background: linear-gradient(135deg, #fbbf24, #ec4899);
             border: none;
             padding: 12px 24px;
             border-radius: 12px;
             font-weight: bold;
-            color: #0f172a;
             cursor: pointer;
             transition: 0.2s;
         }
 
-        .copy-btn:hover, .download-btn:hover {
+        button:hover {
             transform: scale(1.02);
             opacity: 0.9;
         }
@@ -183,69 +157,8 @@
             background: linear-gradient(135deg, #10b981, #06b6d4);
             color: white;
             width: 100%;
-            text-align: center;
             font-size: 1.1rem;
-        }
-
-        /* history section */
-        .history-section {
-            margin-top: 30px;
-        }
-
-        .history-title {
-            color: #cbd5e1;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-        }
-
-        .history-list {
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .history-item {
-            background: #1e293b;
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .history-name {
-            color: white;
-            font-size: 0.85rem;
-            flex: 1;
-            word-break: break-all;
-        }
-
-        .history-download {
-            background: #06b6d4;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-            font-size: 0.75rem;
-        }
-
-        .clear-btn {
-            background: #ef4444;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 10px;
-            color: white;
-            cursor: pointer;
             margin-top: 10px;
-            font-size: 0.8rem;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .toast {
@@ -271,77 +184,99 @@
         footer {
             text-align: center;
             color: #475569;
-            margin-top: 40px;
+            margin-top: 30px;
             font-size: 0.8rem;
+        }
+
+        .history-item {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .history-name {
+            color: white;
+            font-size: 0.85rem;
+            flex: 1;
+        }
+
+        .small-btn {
+            background: #06b6d4;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+        }
+
+        .clear-btn {
+            background: #ef4444;
+            margin-top: 10px;
+            padding: 8px 16px;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="header">
+    <div class="card">
         <h1>📤 ShareXpress</h1>
-        <p>Upload any file → Get shareable link → Anyone can download</p>
-    </div>
+        <div class="sub">Upload → Share Link → Anyone Downloads</div>
 
-    <!-- Upload Box -->
-    <div class="upload-box" id="uploadBox">
-        <div class="upload-icon">📁➡️🌐</div>
-        <h3>Drag & Drop file here</h3>
-        <p>or click to select</p>
-        <input type="file" id="fileInput" class="file-input">
-    </div>
+        <!-- Upload Area -->
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📁 ➡️ 🌐</div>
+            <h3>Click or Drag & Drop</h3>
+            <p>Any file up to 50MB</p>
+            <input type="file" id="fileInput">
+        </div>
 
-    <!-- Current File Info -->
-    <div class="file-info" id="fileInfo">
-        <div class="file-details">
-            <div class="file-icon" id="fileIcon">📄</div>
-            <div class="file-meta">
-                <div class="file-name" id="fileName">-</div>
-                <div class="file-size" id="fileSize">-</div>
+        <!-- File Info Card -->
+        <div class="file-card" id="fileCard">
+            <div class="file-info">
+                <div class="file-icon" id="fileIcon">📄</div>
+                <div class="file-details">
+                    <div class="file-name" id="fileName">-</div>
+                    <div class="file-size" id="fileSize">-</div>
+                </div>
             </div>
+            <div class="link-box">
+                <input type="text" class="link-input" id="shareLink" readonly placeholder="Shareable link will appear here">
+                <button id="copyBtn">📋 Copy</button>
+            </div>
+            <button class="download-btn" id="downloadBtn">⬇️ Download This File ⬇️</button>
         </div>
-    </div>
 
-    <!-- Share Section -->
-    <div class="share-section" id="shareSection">
-        <div class="share-title">🔗 Share this link with anyone:</div>
-        <div class="link-container">
-            <input type="text" class="share-link" id="shareLink" readonly>
-            <button class="copy-btn" id="copyBtn">📋 Copy Link</button>
-        </div>
-        <button class="download-btn" id="directDownloadBtn">⬇️ Download File ⬇️</button>
-        <p style="color: #94a3b8; font-size: 0.75rem; margin-top: 12px;">💡 Link tab tak valid hai jab tak aap page refresh/cache clear nahi karte. Koi bhi is link se file download kar sakta hai!</p>
+        <!-- History -->
+        <div id="historyContainer"></div>
     </div>
-
-    <!-- History / Previously uploaded files -->
-    <div class="history-section" id="historySection" style="display: none;">
-        <div class="history-title">📜 Previously Shared Files</div>
-        <div class="history-list" id="historyList"></div>
-        <button class="clear-btn" id="clearHistoryBtn">🗑️ Clear History</button>
-    </div>
-
-    <footer>
-        ⚡ Instant Share | No server required | Files stored in your browser's memory
-    </footer>
+    <footer>⚡ 1 file = 1 link | Anyone can download | No server needed</footer>
 </div>
 
 <script>
-    // ========================
-    // FILE SHARING SYSTEM - PURE FRONTEND
-    // Koi bhi file upload karo, link banao, koi bhi download kar sakta hai
-    // ========================
+    // ============== SIMPLE WORKING VERSION ==============
+    let currentFileData = null;
+    let currentFileName = null;
 
-    let currentFile = null;      // Store actual File object
-    let currentFileDataUrl = null;  // Base64 URL for sharing/download
-    let currentFileId = null;    // unique ID for this file session
-    
-    // History array to store multiple files
-    let fileHistory = [];
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const fileCard = document.getElementById('fileCard');
+    const fileNameSpan = document.getElementById('fileName');
+    const fileSizeSpan = document.getElementById('fileSize');
+    const fileIconSpan = document.getElementById('fileIcon');
+    const shareLinkInput = document.getElementById('shareLink');
+    const copyBtn = document.getElementById('copyBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const historyContainer = document.getElementById('historyContainer');
 
     // Load history from localStorage
+    let fileHistory = [];
+
     function loadHistory() {
-        const saved = localStorage.getItem('sharexpress_history');
-        if(saved) {
+        const saved = localStorage.getItem('sharexpress_data');
+        if (saved) {
             try {
                 fileHistory = JSON.parse(saved);
                 renderHistory();
@@ -349,269 +284,209 @@
         }
     }
 
-    // Save history to localStorage
     function saveHistory() {
-        // store only meta (name, size, type, id, dataUrl) but dataUrl can be huge — limit history size
-        // For better performance, we'll store only last 5 files in localStorage (actual dataUrls limited)
-        let historyToStore = fileHistory.slice(0, 8).map(item => ({
-            id: item.id,
-            name: item.name,
-            size: item.size,
-            type: item.type,
-            dataUrl: item.dataUrl,   // base64 stored, be careful but works for small/medium files
-            timestamp: item.timestamp
-        }));
-        localStorage.setItem('sharexpress_history', JSON.stringify(historyToStore));
+        // keep only last 8
+        const toSave = fileHistory.slice(0, 8);
+        localStorage.setItem('sharexpress_data', JSON.stringify(toSave));
     }
 
-    // Add file to history
-    function addToHistory(file, dataUrl, fileId) {
-        const historyItem = {
-            id: fileId,
-            name: file.name,
-            size: file.size,
-            type: file.type,
-            dataUrl: dataUrl,
-            timestamp: Date.now()
-        };
-        // Avoid duplicates
-        fileHistory = fileHistory.filter(f => f.id !== fileId);
-        fileHistory.unshift(historyItem);
-        // keep max 10 items
-        if(fileHistory.length > 10) fileHistory.pop();
-        saveHistory();
-        renderHistory();
-    }
-
-    // Render history list
     function renderHistory() {
-        const historySection = document.getElementById('historySection');
-        const historyList = document.getElementById('historyList');
-        if(fileHistory.length === 0) {
-            historySection.style.display = 'none';
+        if (fileHistory.length === 0) {
+            historyContainer.innerHTML = '';
             return;
         }
-        historySection.style.display = 'block';
-        historyList.innerHTML = '';
-        fileHistory.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'history-item';
-            div.innerHTML = `
-                <span class="history-name">📄 ${item.name.substring(0, 35)}${item.name.length > 35 ? '...' : ''} (${formatBytes(item.size)})</span>
-                <button class="history-download" data-id="${item.id}">⬇️ Download</button>
+        let html = `<div style="margin-top:20px;"><h3 style="color:#cbd5e1; margin-bottom:10px;">📜 Previously Shared</h3>`;
+        fileHistory.forEach((item, idx) => {
+            html += `
+                <div class="history-item">
+                    <span class="history-name">📄 ${item.name.substring(0, 40)} (${item.size})</span>
+                    <button class="small-btn" onclick="downloadHistoryItem(${idx})">⬇️ Download</button>
+                </div>
             `;
-            historyList.appendChild(div);
         });
-        
-        // attach download events to history buttons
-        document.querySelectorAll('.history-download').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = btn.getAttribute('data-id');
-                const found = fileHistory.find(f => f.id === id);
-                if(found && found.dataUrl) {
-                    downloadFromDataUrl(found.dataUrl, found.name);
-                    showToast(`⬇️ Downloading: ${found.name}`);
-                } else {
-                    showToast('❌ File data expired!', 'error');
-                }
-            });
-        });
+        html += `<button class="clear-btn" onclick="clearHistory()">🗑️ Clear History</button></div>`;
+        historyContainer.innerHTML = html;
+    }
+
+    window.downloadHistoryItem = function(idx) {
+        const item = fileHistory[idx];
+        if (item && item.dataUrl) {
+            const link = document.createElement('a');
+            link.href = item.dataUrl;
+            link.download = item.originalName;
+            link.click();
+            showToast(`Downloading: ${item.name}`);
+        } else {
+            showToast('File data expired!', 'error');
+        }
+    };
+
+    window.clearHistory = function() {
+        fileHistory = [];
+        saveHistory();
+        renderHistory();
+        showToast('History cleared');
+    };
+
+    function showToast(msg, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.style.background = type === 'error' ? '#ef4444' : '#10b981';
+        toast.textContent = msg;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
     }
 
     function formatBytes(bytes) {
-        if(bytes === 0) return '0 Bytes';
+        if (bytes === 0) return '0 Bytes';
         const k = 1024;
         const sizes = ['Bytes', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
 
-    function showToast(msg, type = 'success') {
-        const toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.style.background = type === 'error' ? '#ef4444' : '#10b981';
-        toast.innerText = msg;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2000);
+    function getFileIcon(fileName, fileType) {
+        if (fileType.startsWith('image/')) return '🖼️';
+        if (fileType.startsWith('video/')) return '🎥';
+        if (fileType.startsWith('audio/')) return '🎵';
+        if (fileName.endsWith('.pdf')) return '📕';
+        if (fileName.endsWith('.zip') || fileName.endsWith('.rar')) return '🗜️';
+        return '📄';
     }
 
-    // Generate unique ID
-    function generateFileId() {
-        return Date.now() + '-' + Math.random().toString(36).substr(2, 9);
-    }
-
-    // Process uploaded file: convert to base64, create shareable link
     function processFile(file) {
-        if(!file) return;
-        
-        // Validate size (max 50MB for smooth performance)
-        if(file.size > 50 * 1024 * 1024) {
-            showToast('⚠️ File too large! Max 50MB', 'error');
+        if (!file) return;
+        if (file.size > 50 * 1024 * 1024) {
+            showToast('File too large! Max 50MB', 'error');
             return;
         }
-        
-        currentFile = file;
-        const fileId = generateFileId();
-        currentFileId = fileId;
-        
-        // Update UI with file info
-        document.getElementById('fileName').innerText = file.name;
-        document.getElementById('fileSize').innerText = formatBytes(file.size);
-        
-        let icon = '📄';
-        if(file.type.startsWith('image/')) icon = '🖼️';
-        else if(file.type.startsWith('video/')) icon = '🎥';
-        else if(file.type.startsWith('audio/')) icon = '🎵';
-        else if(file.name.endsWith('.zip') || file.name.endsWith('.rar')) icon = '🗜️';
-        else if(file.type === 'application/pdf') icon = '📕';
-        document.getElementById('fileIcon').innerText = icon;
-        
-        document.getElementById('fileInfo').classList.add('show');
-        
-        // Convert to base64 data URL for sharing
+
+        currentFileName = file.name;
+        fileNameSpan.textContent = file.name;
+        fileSizeSpan.textContent = formatBytes(file.size);
+        fileIconSpan.textContent = getFileIcon(file.name, file.type);
+
         const reader = new FileReader();
         reader.onload = function(e) {
-            currentFileDataUrl = e.target.result;
+            currentFileData = e.target.result;
             
-            // Create shareable link (current page URL + hash param)
-            const shareableUrl = `${window.location.origin}${window.location.pathname}#file=${fileId}`;
-            document.getElementById('shareLink').value = shareableUrl;
-            document.getElementById('shareSection').classList.add('show');
-            
-            // Store file data in sessionStorage so that other users can access by hash?
-            // Actually we need to store in localStorage with ID mapping so that if someone opens the link,
-            // they can retrieve from storage.
-            storeFileInStorage(fileId, file.name, file.size, file.type, currentFileDataUrl);
-            
+            // Generate unique ID
+            const fileId = Date.now() + '-' + Math.random().toString(36).substr(2, 8);
+            const shareUrl = window.location.href.split('#')[0] + '?file=' + fileId;
+            shareLinkInput.value = shareUrl;
+
+            // Store in localStorage for sharing
+            const fileStore = JSON.parse(localStorage.getItem('sharexpress_files') || '{}');
+            fileStore[fileId] = {
+                name: file.name,
+                size: formatBytes(file.size),
+                originalSize: file.size,
+                type: file.type,
+                dataUrl: currentFileData,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('sharexpress_files', JSON.stringify(fileStore));
+
             // Add to history
-            addToHistory(file, currentFileDataUrl, fileId);
-            
-            showToast(`✅ "${file.name}" is ready to share!`);
+            fileHistory.unshift({
+                id: fileId,
+                name: file.name,
+                size: formatBytes(file.size),
+                originalName: file.name,
+                dataUrl: currentFileData,
+                timestamp: Date.now()
+            });
+            saveHistory();
+            renderHistory();
+
+            fileCard.classList.add('show');
+            showToast(`✅ "${file.name}" ready to share!`);
         };
-        reader.onerror = () => {
-            showToast('❌ Failed to read file', 'error');
-        };
+        reader.onerror = () => showToast('Error reading file', 'error');
         reader.readAsDataURL(file);
     }
-    
-    // Store file mapping in localStorage so that anyone with the link can download
-    function storeFileInStorage(id, name, size, type, dataUrl) {
-        const fileStore = JSON.parse(localStorage.getItem('sharexpress_files') || '{}');
-        fileStore[id] = {
-            name: name,
-            size: size,
-            type: type,
-            dataUrl: dataUrl,
-            timestamp: Date.now()
-        };
-        // Clean old files older than 1 hour or keep max 15
-        const now = Date.now();
-        Object.keys(fileStore).forEach(key => {
-            if(now - fileStore[key].timestamp > 3600000) { // 1 hour expiry
-                delete fileStore[key];
-            }
-        });
-        localStorage.setItem('sharexpress_files', JSON.stringify(fileStore));
-    }
-    
-    // Retrieve file from storage by ID
-    function getFileFromStorage(id) {
-        const fileStore = JSON.parse(localStorage.getItem('sharexpress_files') || '{}');
-        return fileStore[id] || null;
-    }
-    
-    // Download from dataUrl
-    function downloadFromDataUrl(dataUrl, filename) {
-        const link = document.createElement('a');
-        link.href = dataUrl;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-    
-    // Check URL hash for shared file
+
+    // Check URL for shared file
     function checkForSharedFile() {
-        const hash = window.location.hash;
-        if(hash.startsWith('#file=')) {
-            const fileId = hash.substring(6);
-            const fileData = getFileFromStorage(fileId);
-            if(fileData) {
-                // Show modal or auto download prompt
-                if(confirm(`📥 Someone shared "${fileData.name}" (${formatBytes(fileData.size)}) with you. Download now?`)) {
-                    downloadFromDataUrl(fileData.dataUrl, fileData.name);
-                    showToast(`⬇️ Download started: ${fileData.name}`);
+        const params = new URLSearchParams(window.location.search);
+        const fileId = params.get('file');
+        if (fileId) {
+            const fileStore = JSON.parse(localStorage.getItem('sharexpress_files') || '{}');
+            const fileData = fileStore[fileId];
+            if (fileData && fileData.dataUrl) {
+                if (confirm(`📥 Download "${fileData.name}" (${fileData.size}) ?`)) {
+                    const link = document.createElement('a');
+                    link.href = fileData.dataUrl;
+                    link.download = fileData.name;
+                    link.click();
+                    showToast(`Download started: ${fileData.name}`);
                 }
-                // Remove hash without reload
-                history.pushState("", document.title, window.location.pathname);
+                // Remove param from URL without reload
+                const newUrl = window.location.href.split('?')[0];
+                window.history.replaceState({}, document.title, newUrl);
             } else {
-                showToast('⚠️ File expired or not found! Link may be invalid.', 'error');
-                history.pushState("", document.title, window.location.pathname);
+                showToast('File expired or not found!', 'error');
+                window.history.replaceState({}, document.title, window.location.href.split('?')[0]);
             }
         }
     }
-    
-    // Direct download of current file
-    function downloadCurrentFile() {
-        if(currentFileDataUrl && currentFile) {
-            downloadFromDataUrl(currentFileDataUrl, currentFile.name);
-            showToast(`⬇️ Downloading: ${currentFile.name}`);
+
+    // Events
+    uploadArea.addEventListener('click', () => fileInput.click());
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = '#ec4899';
+    });
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.style.borderColor = '#fbbf24';
+    });
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = '#fbbf24';
+        const files = e.dataTransfer.files;
+        if (files.length > 0) processFile(files[0]);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) processFile(e.target.files[0]);
+    });
+
+    copyBtn.addEventListener('click', () => {
+        shareLinkInput.select();
+        document.execCommand('copy');
+        showToast('Link copied to clipboard!');
+    });
+
+    downloadBtn.addEventListener('click', () => {
+        if (currentFileData && currentFileName) {
+            const link = document.createElement('a');
+            link.href = currentFileData;
+            link.download = currentFileName;
+            link.click();
+            showToast(`Downloading: ${currentFileName}`);
         } else {
             showToast('No file selected', 'error');
         }
+    });
+
+    // Clean old files (older than 1 hour)
+    function cleanOldFiles() {
+        const fileStore = JSON.parse(localStorage.getItem('sharexpress_files') || '{}');
+        const now = Date.now();
+        let changed = false;
+        Object.keys(fileStore).forEach(key => {
+            if (now - fileStore[key].timestamp > 3600000) {
+                delete fileStore[key];
+                changed = true;
+            }
+        });
+        if (changed) localStorage.setItem('sharexpress_files', JSON.stringify(fileStore));
     }
-    
-    // Clear history
-    function clearHistory() {
-        fileHistory = [];
-        localStorage.removeItem('sharexpress_history');
-        renderHistory();
-        showToast('History cleared');
-    }
-    
-    // Event listeners
-    const uploadBox = document.getElementById('uploadBox');
-    const fileInput = document.getElementById('fileInput');
-    
-    uploadBox.addEventListener('click', () => fileInput.click());
-    uploadBox.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        uploadBox.style.borderColor = '#ec4899';
-    });
-    uploadBox.addEventListener('dragleave', () => {
-        uploadBox.style.borderColor = '#fbbf24';
-    });
-    uploadBox.addEventListener('drop', (e) => {
-        e.preventDefault();
-        uploadBox.style.borderColor = '#fbbf24';
-        const files = e.dataTransfer.files;
-        if(files.length > 0) processFile(files[0]);
-    });
-    
-    fileInput.addEventListener('change', (e) => {
-        if(e.target.files.length > 0) processFile(e.target.files[0]);
-    });
-    
-    document.getElementById('copyBtn').addEventListener('click', () => {
-        const linkInput = document.getElementById('shareLink');
-        linkInput.select();
-        document.execCommand('copy');
-        showToast('🔗 Link copied to clipboard!');
-    });
-    
-    document.getElementById('directDownloadBtn').addEventListener('click', downloadCurrentFile);
-    document.getElementById('clearHistoryBtn').addEventListener('click', clearHistory);
-    
+
     // Initialize
     loadHistory();
+    cleanOldFiles();
     checkForSharedFile();
-    
-    // Auto refresh hash check when page loads
-    window.addEventListener('hashchange', () => {
-        checkForSharedFile();
-    });
-    
-    console.log('🔥 ShareXpress ready! Upload any file, share link, anyone can download.');
 </script>
 </body>
 </html>
